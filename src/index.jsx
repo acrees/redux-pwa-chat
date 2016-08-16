@@ -3,8 +3,9 @@ import createLogger from 'redux-logger';
 import { createStore, applyMiddleware } from 'redux';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import App from './app.jsx';
+import App from './app';
 import { root as reducer } from './reducers';
+import * as locals from './page.styl';
 
 const loggerMiddleware = createLogger();
 

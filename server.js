@@ -14,16 +14,24 @@ function run(app) {
 
 var webpackConf = {
   module: {
-    loaders: [{
+    loaders: [
+    {
       test: /.jsx?$/,
-      include: path.resolve(__dirname, 'src/js'),
+      include: path.resolve(__dirname, 'src'),
       loader: 'babel',
       query: {
         presets: ['es2015', 'react']
       }
+    },
+    {
+      test: /\.styl$/,
+      loader: 'style-loader!css-loader!stylus-loader'
     }]
   },
-  context: path.resolve(__dirname, 'src/js'),
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
+  context: path.resolve(__dirname, 'src'),
   entry: './entry.js',
   output: { path: '/', filename: 'bundle.js' }
 };
