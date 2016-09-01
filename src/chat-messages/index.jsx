@@ -1,9 +1,9 @@
 import React from 'react'
 
 export default function ChatMessages({messages}) {
-  var messageNodes = messages.map(({id, content}) => (
+  var messageNodes = messages.map(({id, content, sent}) => (
     <li key={id}>
-      <pre>{content}</pre>
+      <pre className={sent ? 'sent' : 'pending'}>{content}</pre>
     </li>
   ));
 

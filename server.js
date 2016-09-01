@@ -1,14 +1,20 @@
 var path = require('path');
 var express = require('express');
 var webpack = require('webpack');
+var socket = require('socket.io');
 
 function run(app) {
   app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
   });
 
-  app.listen(8080, function () {
-    console.log('Listening on port 8080!');
+  var io = socket.listen(app.listen(8080));
+
+  io.sockets.on('connection', function (s) {
+    s.on('send-message', function (m) {
+      s.broadcast.emit('recieve-message', m);
+      s.emit('sent-message', { id: m.id });
+    });
   });
 }
 
@@ -33,7 +39,8 @@ var webpackConf = {
   },
   context: path.resolve(__dirname, 'src'),
   entry: './entry.js',
-  output: { path: '/', filename: 'bundle.js' }
+  output: { path: '/', filename: 'bundle.js' },
+  devtool: '#source-map'
 };
 var compiler = webpack(webpackConf);
 
