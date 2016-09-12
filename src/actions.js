@@ -1,15 +1,12 @@
 import uuid from 'node-uuid'
 
-export const INPUT_CHANGED = 'input-changed';
 export const NEW_MESSAGE = 'new-message';
 export const SENT_MESSAGE = 'sent-message';
 
-export function inputChanged(input) {
-  return {
-    type: INPUT_CHANGED,
-    input
-  };
-}
+export const NAME_INPUT_CHANGED = 'name-input-changed';
+export const SHOW_CHAT_PAGE = 'show-chat-page';
+
+export const CHAT_INPUT_CHANGED = 'chat-input-changed';
 
 export function newMessage(message) {
   return {
@@ -21,7 +18,7 @@ export function newMessage(message) {
 export function sendMessage(content) {
   var message = { id: uuid.v4(), content, sent: false };
   return dispatch => {
-    dispatch(inputChanged(''));
+    dispatch(chatInputChanged(''));
     dispatch(newMessage(message));
     window.socket.emit('send-message', message);
   }
@@ -31,5 +28,25 @@ export function sentMessage(id) {
   return {
     type: SENT_MESSAGE,
     id
+  };
+}
+
+export function nameInputChanged(name) {
+  return {
+    type: NAME_INPUT_CHANGED,
+    name
+  };
+}
+
+export function showChatPage() {
+  return {
+    type: SHOW_CHAT_PAGE
+  };
+}
+
+export function chatInputChanged(input) {
+  return {
+    type: CHAT_INPUT_CHANGED,
+    input
   };
 }
