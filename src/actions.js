@@ -1,5 +1,6 @@
 import uuid from 'node-uuid'
 
+export const SET_CODE = 'set-code';
 export const NEW_MESSAGE = 'new-message';
 export const SENT_MESSAGE = 'sent-message';
 
@@ -7,6 +8,13 @@ export const NAME_INPUT_CHANGED = 'name-input-changed';
 export const SHOW_CHAT_PAGE = 'show-chat-page';
 
 export const CHAT_INPUT_CHANGED = 'chat-input-changed';
+
+export function setCode(code) {
+  return {
+    type: SET_CODE,
+    code
+  };
+}
 
 export function newMessage(message) {
   return {
@@ -16,8 +24,9 @@ export function newMessage(message) {
 }
 
 export function sendMessage(content) {
-  var message = { id: uuid.v4(), content, sent: false };
-  return dispatch => {
+  return (dispatch, getState) => {
+    var authorCode = getState().get('authorCode');
+    var message = { id: uuid.v4(), content, sent: false, authorCode };
     dispatch(chatInputChanged(''));
     dispatch(newMessage(message));
     window.socket.emit('send-message', message);

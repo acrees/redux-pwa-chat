@@ -1,16 +1,19 @@
 import { Map, List } from 'immutable'
 import { combineReducers } from 'redux'
-import { NEW_MESSAGE, SENT_MESSAGE, NAME_INPUT_CHANGED, SHOW_CHAT_PAGE, CHAT_INPUT_CHANGED } from './actions'
+import { SET_CODE, NEW_MESSAGE, SENT_MESSAGE, NAME_INPUT_CHANGED, SHOW_CHAT_PAGE, CHAT_INPUT_CHANGED } from './actions'
 
 const initialState = Map({
   name: '',
   input: '',
   messages: List(),
-  view: 'welcome'
+  view: 'welcome',
+  authorCode: ''
 });
 
 export function root(state = initialState, action) {
   switch(action.type) {
+    case SET_CODE:
+      return state.set('authorCode', action.code);
     case NEW_MESSAGE:
       return state
         .set('messages', state.get('messages').push(action.message));

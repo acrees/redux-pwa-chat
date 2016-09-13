@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import App from './app';
 import { root as reducer } from './reducers';
 import * as locals from './page.styl';
-import { sentMessage, newMessage } from './actions';
+import { setCode, sentMessage, newMessage } from './actions';
 
 const loggerMiddleware = createLogger();
 
@@ -26,6 +26,10 @@ render(
 );
 
 var socket = io.connect(window.location.host);
+
+socket.on('set-code', (m) => {
+  store.dispatch(setCode(m.code));
+});
 
 socket.on('sent-message', (m) => {
   store.dispatch(sentMessage(m.id));

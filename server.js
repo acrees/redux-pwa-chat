@@ -2,17 +2,27 @@ var path = require('path');
 var express = require('express');
 var webpack = require('webpack');
 var socket = require('socket.io');
+var uuid = require('node-uuid');
 
 function run(app) {
   app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
   });
 
+  var users = {};
+
   var io = socket.listen(app.listen(8080));
 
   io.sockets.on('connection', function (s) {
+    s.on('register', function (m) {
+      var code = uuid.v4();
+      users[code] = m.name;
+      s.emit('set-code', { code: code });
+    });
     s.on('send-message', function (m) {
-      s.broadcast.emit('recieve-message', m);
+      var author = users[m.authorCode];
+      if (!author) return; // user not found
+      s.broadcast.emit('recieve-message', { id: m.id, content: m.content, author })
       s.emit('sent-message', { id: m.id });
     });
   });

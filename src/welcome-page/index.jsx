@@ -12,7 +12,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onInputChanged: (e) => dispatch(nameInputChanged(e.target.value)),
-    onNext: () => dispatch(showChatPage())
+    onNext: (name) => {
+      window.socket.emit('register', { name });
+      dispatch(showChatPage());
+    }
   };
 }
 
@@ -22,7 +25,7 @@ class WelcomePage extends React.Component {
       <div>
         <h1>Hello there!</h1>
         <input type="text" value={this.props.name} onChange={this.props.onInputChanged} />
-        <button onClick={this.props.onNext}>Start</button>
+        <button onClick={this.props.onNext.bind(this, this.props.name)}>Start</button>
       </div>
     );
   }
