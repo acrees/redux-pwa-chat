@@ -8,12 +8,14 @@ import App from './app';
 import { root as reducer } from './reducers';
 import * as locals from './page.styl';
 import { setCode, sentMessage, newMessage } from './actions';
+import { cachingMiddleware } from './middleware';
 
 const loggerMiddleware = createLogger();
 
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
-  loggerMiddleware
+  loggerMiddleware,
+  cachingMiddleware
 )(createStore);
 
 const store = createStoreWithMiddleware(reducer);
